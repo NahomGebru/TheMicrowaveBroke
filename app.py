@@ -1,25 +1,18 @@
 import flask
+import os
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import find_dotenv, load_dotenv
+
+load_dotenv(find_dotenv())
 
 app = flask.Flask(__name__)
+# Point SQLAlchemy to your Heroku database
+db_url = os.getenv("DATABASE_URL")
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+app.config["SQLALCHEMY_DATABASE_URI"] = db_url
+# Gets rid of a warning
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.secret_key = b"I am a secret key!"  # don't defraud my app ok?
 
-# set up a separate route to serve the index.html file generated
-# by create-react-app/npm run build.
-# By doing this, we make it so you can paste in all your old app routes
-# from Milestone 2 without interfering with the functionality here.
-bp = flask.Blueprint(
-    "bp",
-    __name__,
-    template_folder="./static/react",
-)
-
-# route for serving React page
-@bp.route("/")
-def index():
-    # NB: DO NOT add an "index.html" file in your normal templates folder
-    # Flask will stop serving this React page correctly
-    return flask.render_template("index.html")
-
-
-app.register_blueprint(bp)
-
-app.run()
+db = SQLAlchemy(app)
