@@ -1,14 +1,23 @@
 from app import app, db
 import random
 import os
+import requests
 
 import flask
+from flask import Flask, render_template, session, request, redirect, abort, jsonify
 from flask_login import login_user, current_user, LoginManager, logout_user
 from flask_login.utils import login_required
 from models import User, Rating
 
 from wikipedia import get_wiki_link
 from tmdb import get_movie_data
+from dotenv import find_dotenv, load_dotenv
+
+load_dotenv(find_dotenv())
+
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+
 
 login_manager = LoginManager()
 login_manager.login_view = "login"
@@ -97,6 +106,11 @@ def login():
 
 @app.route("/login", methods=["POST"])
 def login_post():
+    if request.args.get("next"):
+        session["next"] = request.args.get("next")
+        return redirect(
+            f"https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=http://127.0.0.1:5000/authorized&client_id={GOOGLE_CLIENT_ID}"
+        )
     username = flask.request.form.get("username")
     user = User.query.filter_by(username=username).first()
     if user:
@@ -105,6 +119,25 @@ def login_post():
 
     else:
         return flask.jsonify({"status": 401, "reason": "Username or Password Error"})
+
+
+@app.route("/authorized")
+def google_authorized():
+    r = requests.post(
+        "https://oauth2.googleapis.com/token",
+        data={
+            "client_id": GOOGLE_CLIENT_ID,
+            "client_secret": GOOGLE_CLIENT_SECRET,
+            "code": request.args.get("code"),
+            "grant_type": "authorization_code",
+            "redirect_uri": "http://127.0.0.1:5000/authorized",
+        },
+    )
+    access_token = r.json()["access_token"]
+    r = requests.get(
+        f"https://www.googleapis.com/oauth2/v2/userinfo?access_token={access_token}"
+    ).json()
+    return r
 
 
 MOVIE_IDS = [
