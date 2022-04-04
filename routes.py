@@ -1,3 +1,4 @@
+from logging import Filter
 from app import app, db
 import random
 import os
@@ -5,7 +6,7 @@ import os
 import flask
 from flask_login import login_user, current_user, LoginManager, logout_user
 from flask_login.utils import login_required
-from models import User, Rating
+from models import Filters, Ingredients, User, Rating
 
 from wikipedia import get_wiki_link
 from tmdb import get_movie_data
@@ -34,41 +35,115 @@ def load_user(user_name):
     return User.query.get(user_name)
 
 
-@app.route("/get_reviews")
+
+@app.route("/get_userinfo")
 @login_required
-def foo():
-    ratings = Rating.query.filter_by(username=current_user.username).all()
+def userinfo():
+    userInfos = User.query.filter_by(username=current_user.username).all()
     return flask.jsonify(
         [
             {
-                "rating": rating.rating,
-                "comment": rating.comment,
-                "movie_id": rating.movie_id,
+                "actualName": info.actualName,
+                "address": info.address,
+                "bio": info.bio,
+
             }
-            for rating in ratings
+            for info in userInfos
         ]
     )
 
 
-@app.route("/save_reviews", methods=["POST"])
-def save_reviews():
+@app.route("/get_ingredients")
+@login_required
+def foo():
+    ingredients = Ingredients.query.filter_by(username=current_user.username).all()
+    return flask.jsonify(
+        [
+            {
+                "Ingredients": ingredient.ingredients,
+
+            }
+            for ingredient in ingredients
+        ]
+    )
+
+
+@app.route("/get_filter")
+@login_required
+def get_filter():
+    userFilters = Filters.query.filter_by(username=current_user.username).all()
+    return flask.jsonify(
+        [
+            {
+                "cuisineFilter": f.cuisineFilter,
+                "allergyFilter": f.allergyFilter,
+                "dietFilter": f.dietFilter,
+
+            }
+            for f in userFilters
+        ]
+    )
+
+@app.route("/save_ingredients", methods=["POST"])
+def save_ingredients():
     data = flask.request.json
-    user_ratings = Rating.query.filter_by(username=current_user.username).all()
-    new_ratings = [
-        Rating(
+    user_ingredients = Ingredients.query.filter_by(username=current_user.username).all()
+    new_ingredients = [
+        Ingredients(
             username=current_user.username,
-            rating=r["rating"],
-            comment=r["comment"],
-            movie_id=r["movie_id"],
+            ingredients=r["ingredients"],
         )
         for r in data
     ]
-    for rating in user_ratings:
-        db.session.delete(rating)
-    for rating in new_ratings:
-        db.session.add(rating)
+    for ingredients in user_ingredients:
+        db.session.delete(ingredients)
+    for ingredients in new_ingredients:
+        db.session.add(ingredients)
     db.session.commit()
-    return flask.jsonify("Ratings successfully saved")
+    return flask.jsonify("Ingredients successfully saved")
+
+
+@app.route("/save_filters", methods=["POST"])
+def save_filters():
+    data = flask.request.json
+    user_filters = Filters.query.filter_by(username=current_user.username).all()
+    new_filters = [
+        Filters(
+            username=current_user.username,
+           cuisineFilter=r["cuisineFilter"],
+           allergyFilter=r["cuisineFilter"],
+           dietFilter=r["dietFilter"],
+        )
+        for r in data
+    ]
+    for fil in user_filters:
+        db.session.delete(fil)
+    for fil in new_filters:
+        db.session.add(fil)
+    db.session.commit()
+    return flask.jsonify("Filters successfully saved")
+
+
+
+@app.route("/save_info", methods=["POST"])
+def save_info():
+    data = flask.request.json
+    user_info = User.query.filter_by(username=current_user.username).all()
+    new_info = [
+        User(
+            username=current_user.username,
+            actualName=r["actualName"],
+            address=r["address"],
+            bio=r["bio"]
+        )
+        for r in data
+    ]
+    for info in user_info:
+        db.session.delete(info)
+    for info in new_info:
+        db.session.add(info)
+    db.session.commit()
+    return flask.jsonify("User infrormation successfully saved")
 
 
 @app.route("/signup")
@@ -112,21 +187,56 @@ MOVIE_IDS = [
 ]
 
 
-@app.route("/rate", methods=["POST"])
-def rate():
+@app.route("/ingredient_list", methods=["POST"])
+def ingredient_list():
     data = flask.request.form
-    rating = data.get("rating")
-    comment = data.get("comment")
-    movie_id = data.get("movie_id")
+    ingredients = data.get("ingredients")
 
-    new_rating = Rating(
+
+    new_ingredient = Ingredients(
         username=current_user.username,
-        rating=rating,
-        comment=comment,
-        movie_id=movie_id,
+        ingredients=ingredients,
     )
 
-    db.session.add(new_rating)
+    db.session.add(new_ingredient)
+    db.session.commit()
+    return flask.redirect("index")
+
+
+@app.route("/user_list", methods=["POST"])
+def user_list():
+    data = flask.request.form
+    actualName = data.get("actualName")
+    address = data.get("address")
+    bio = data.get("bio")
+
+    new_user = User(
+        username=current_user.username,
+        actualName=actualName,
+        address= address,
+        bio=bio,
+    )
+
+    db.session.add(new_user)
+    db.session.commit()
+    return flask.redirect("index")
+
+
+@app.route("/filter_list", methods=["POST"])
+def filter_list():
+    data = flask.request.form
+    cuisineFilter = data.get("cuisineFilter")
+    allergyFilter = data.get("allergyFilter")
+    dietFilter = data.get("dietFilter")
+
+    new_filter = Filters(
+        username=current_user.username,
+        cuisineFilter=cuisineFilter,
+        allergyFilter= allergyFilter,
+       dietFilter=dietFilter,
+    )
+
+    db.session.add(new_filter)
     db.session.commit()
     return flask.redirect("index")
 
