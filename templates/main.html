@@ -1,21 +1,22 @@
 <html>
-	<head>
-		<link rel="stylesheet" href={{ url_for('static', filename='style.css' ) }}
-		/>
-	</head>
+  <head>
+    <link rel="stylesheet" href={{ url_for('static', filename='style.css' ) }}
+    />
+  </head>
 
-	<body>
-		<a href="/logout">Log out</a>
-		<h1>Recipe Generator</h1>
-		<!-- <h2>{{title}}</h2>
+  <body>
+    <script src="static/main.js"></script>
+    <a href="/logout">Log out</a>
+    <h1>Recipe Generator</h1>
+    <!-- <h2>{{title}}</h2>
 		<h3>{{tagline}}</h3> -->
-		<!-- <p>Genres: {{genre}}</p> -->
-		<!-- <div>
+    <!-- <p>Genres: {{genre}}</p> -->
+    <!-- <div>
 			<img src="{{poster_image}}" width="500" height="700" /> -->
-		<!-- </div> -->
-		<!-- <a href="{{wiki_url}}"> Click here to see Wikipedia page! </a> -->
-		<button onclick="addIngredient()">Add Ingredient</button>
-		<!-- <div class="feedback">
+    <!-- </div> -->
+    <!-- <a href="{{wiki_url}}"> Click here to see Wikipedia page! </a> -->
+    <button onclick="addIngredient()">Add Ingredient</button>
+    <!-- <div class="feedback">
 			<form method="POST" action="/rate">
 				<p>
 					<label for="movie_id">Movie ID</label>
@@ -41,7 +42,7 @@
 				</p>
 			</form> -->
 
-		<!-- <h2>See what other people said!</h2>
+    <!-- <h2>See what other people said!</h2>
 			{% for rating in ratings %}
 			<div>
 				<h3>User: {{rating.username}}</h3>
@@ -49,14 +50,14 @@
 				<p>{{rating.comment}}</p>
 			</div>
 			{% endfor %} -->
-		<!-- </div> -->
-		<script>
-			function addIngredient() {
-				var x = document.createElement("INPUT");
-				x.setAttribute("type", "text");
-				x.setAttribute("value", "Hello World!");
-				document.body.appendChild(x);
-			}
-		</script>
-	</body>
+    <!-- </div> -->
+    <!-- <script>
+      function addIngredient() {
+        var x = document.createElement("INPUT");
+        x.setAttribute("type", "text");
+        x.setAttribute("value", "Hello World!");
+        document.body.appendChild(x);
+      }
+    </script> -->
+  </body>
 </html>
