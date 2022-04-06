@@ -21,11 +21,10 @@ bp = flask.Blueprint(
 )
 
 
-@bp.route("/new_page")
+@bp.route("/react")
 def new_page():
     return flask.render_template("index.html")
-
-
+    
 app.register_blueprint(bp)
 
 
