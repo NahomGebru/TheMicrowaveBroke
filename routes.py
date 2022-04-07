@@ -1,19 +1,22 @@
-from logging import Filter
+from crypt import methods
+from pickle import GET
 from app import app, db
-import random
 import os
+import requests
 
 import flask
-from flask_login import login_user, current_user, LoginManager, logout_user
+from flask import Flask, render_template, session, request, redirect, abort, jsonify
 from flask_login.utils import login_required
-from models import Filters, Ingredients, User, Rating
+from Userfetch import login_required
+from models import Ingredients, User, Filters
+from termcolor import colored
+from dotenv import find_dotenv, load_dotenv
 
-from wikipedia import get_wiki_link
-from tmdb import get_movie_data
+load_dotenv(find_dotenv())
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
-login_manager = LoginManager()
-login_manager.login_view = "login"
-login_manager.init_app(app)
 
 bp = flask.Blueprint(
     "bp",
@@ -30,23 +33,65 @@ def new_page():
 app.register_blueprint(bp)
 
 
-@login_manager.user_loader
-def load_user(user_name):
-    return User.query.get(user_name)
+@app.route("/login")
+def login():
+    if request.args.get("next"):
+        session["next"] = request.args.get("next")
+        return redirect(
+            f"https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=http://127.0.0.1:5000/authorized&client_id={GOOGLE_CLIENT_ID}"
+        )
+    return render_template("login.html")
 
+
+@app.route("/authorized")
+def google_authorized():
+    r = requests.post(
+        "https://oauth2.googleapis.com/token",
+        data={
+            "client_id": GOOGLE_CLIENT_ID,
+            "client_secret": GOOGLE_CLIENT_SECRET,
+            "code": request.args.get("code"),
+            "grant_type": "authorization_code",
+            "redirect_uri": "http://127.0.0.1:5000/authorized",
+        },
+    )
+    print(colored(r.json(), "red"))
+    r = requests.get(
+        f'https://www.googleapis.com/oauth2/v2/userinfo?access_token={r.json()["access_token"]}'
+    ).json()
+    user = User.query.filter_by(googleId=str(r["id"])).all()
+    print(user)
+    print(user[0])
+    if len(user) != 0:
+        session["user_id"] = user[0].googleId
+        session["name"] = user[0].actualName
+    else:
+        google_id = str(r["id"])
+        google_name = r["name"]
+
+        new_user = User(
+            googleId=google_id,
+            actualName=google_name,
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+    if session.get("next"):
+        return redirect(session.get("next"))
+    return redirect("/")
 
 
 @app.route("/get_userinfo")
 @login_required
 def userinfo():
-    userInfos = User.query.filter_by(username=current_user.username).all()
+    userInfos = User.query.filter_by(googleId=session["user_id"]).all()
     return flask.jsonify(
         [
             {
                 "actualName": info.actualName,
                 "address": info.address,
                 "bio": info.bio,
-
             }
             for info in userInfos
         ]
@@ -55,42 +100,36 @@ def userinfo():
 
 @app.route("/get_ingredients")
 @login_required
-def foo():
-    ingredients = Ingredients.query.filter_by(username=current_user.username).all()
+def getIngredients():
+    ingredients = Ingredients.query.filter_by(googleId=session["user_id"]).all()
     return flask.jsonify(
-        [
-            {
-                "Ingredients": ingredient.ingredients,
-
-            }
-            for ingredient in ingredients
-        ]
+        [{"Ingredients": ingredient.ingredients} for ingredient in ingredients]
     )
 
 
 @app.route("/get_filter")
 @login_required
-def get_filter():
-    userFilters = Filters.query.filter_by(username=current_user.username).all()
+def getFilter():
+    userFilters = Ingredients.query.filter_by(googleId=session["user_id"]).all()
     return flask.jsonify(
         [
             {
-                "cuisineFilter": f.cuisineFilter,
-                "allergyFilter": f.allergyFilter,
-                "dietFilter": f.dietFilter,
-
+                "cuisineFilter": filter.cuisineFilter,
+                "allergyFilter": filter.allergyFilter,
+                "dietFilter": filter.dietFilter,
             }
-            for f in userFilters
+            for filter in userFilters
         ]
     )
+
 
 @app.route("/save_ingredients", methods=["POST"])
 def save_ingredients():
     data = flask.request.json
-    user_ingredients = Ingredients.query.filter_by(username=current_user.username).all()
+    user_ingredients = Ingredients.query.filter_by(googleId=session["user_id"]).all()
     new_ingredients = [
         Ingredients(
-            username=current_user.username,
+            googleId=session["user_id"],
             ingredients=r["ingredients"],
         )
         for r in data
@@ -106,13 +145,13 @@ def save_ingredients():
 @app.route("/save_filters", methods=["POST"])
 def save_filters():
     data = flask.request.json
-    user_filters = Filters.query.filter_by(username=current_user.username).all()
+    user_filters = Filters.query.filter_by(googleId=session["user_id"]).all()
     new_filters = [
         Filters(
-            username=current_user.username,
-           cuisineFilter=r["cuisineFilter"],
-           allergyFilter=r["cuisineFilter"],
-           dietFilter=r["dietFilter"],
+            googleId=session["user_id"],
+            cuisineFilter=r["cuisineFilter"],
+            allergyFilter=r["cuisineFilter"],
+            dietFilter=r["dietFilter"],
         )
         for r in data
     ]
@@ -124,100 +163,17 @@ def save_filters():
     return flask.jsonify("Filters successfully saved")
 
 
-
-@app.route("/save_info", methods=["POST"])
-def save_info():
-    data = flask.request.json
-    user_info = User.query.filter_by(username=current_user.username).all()
-    new_info = [
-        User(
-            username=current_user.username,
-            actualName=r["actualName"],
-            address=r["address"],
-            bio=r["bio"]
-        )
-        for r in data
-    ]
-    for info in user_info:
-        db.session.delete(info)
-    for info in new_info:
-        db.session.add(info)
-    db.session.commit()
-    return flask.jsonify("User infrormation successfully saved")
-
-
-@app.route("/signup")
-def signup():
-    return flask.render_template("signup.html")
-
-
-@app.route("/signup", methods=["POST"])
-def signup_post():
-    username = flask.request.form.get("username")
-    user = User.query.filter_by(username=username).first()
-    if user:
-        pass
-    else:
-        user = User(username=username)
-        db.session.add(user)
-        db.session.commit()
-
-    return flask.redirect(flask.url_for("login"))
-
-
-@app.route("/login")
-def login():
-    return flask.render_template("login.html")
-
-
-@app.route("/login", methods=["POST"])
-def login_post():
-    username = flask.request.form.get("username")
-    user = User.query.filter_by(username=username).first()
-    if user:
-        login_user(user)
-        return flask.redirect(flask.url_for("index"))
-
-    else:
-        return flask.jsonify({"status": 401, "reason": "Username or Password Error"})
-
-
-MOVIE_IDS = [
-    157336,  # actually IDK what this is
-]
-
-
 @app.route("/ingredient_list", methods=["POST"])
 def ingredient_list():
     data = flask.request.form
     ingredients = data.get("ingredients")
 
-
     new_ingredient = Ingredients(
-        username=current_user.username,
+        googleId=session["user_id"],
         ingredients=ingredients,
     )
 
     db.session.add(new_ingredient)
-    db.session.commit()
-    return flask.redirect("index")
-
-
-@app.route("/user_list", methods=["POST"])
-def user_list():
-    data = flask.request.form
-    actualName = data.get("actualName")
-    address = data.get("address")
-    bio = data.get("bio")
-
-    new_user = User(
-        username=current_user.username,
-        actualName=actualName,
-        address= address,
-        bio=bio,
-    )
-
-    db.session.add(new_user)
     db.session.commit()
     return flask.redirect("index")
 
@@ -230,10 +186,10 @@ def filter_list():
     dietFilter = data.get("dietFilter")
 
     new_filter = Filters(
-        username=current_user.username,
+        googleId=session["user_id"],
         cuisineFilter=cuisineFilter,
-        allergyFilter= allergyFilter,
-       dietFilter=dietFilter,
+        allergyFilter=allergyFilter,
+        dietFilter=dietFilter,
     )
 
     db.session.add(new_filter)
@@ -242,44 +198,19 @@ def filter_list():
 
 
 @app.route("/")
-def landing():
-    if current_user.is_authenticated:
-        return flask.redirect("index")
-    return flask.redirect("login")
+@login_required
+def index():
+    return "Success"
 
 
 @app.route("/logout")
 def logout():
-    logout_user()
-    return flask.redirect("login")
+    session.clear()
+    return flask.redirect("/login")
 
-
-@app.route("/index")
-@login_required
-def index():
-    movie_id = random.choice(MOVIE_IDS)
-
-    # API calls
-    (title, tagline, genre, poster_image) = get_movie_data(movie_id)
-    wikipedia_url = get_wiki_link(title)
-
-    ratings = Rating.query.filter_by(movie_id=movie_id).all()
-
-    return flask.render_template(
-        "main.html",
-        title=title,
-        tagline=tagline,
-        genre=genre,
-        poster_image=poster_image,
-        wiki_url=wikipedia_url,
-        ratings=ratings,
-        movie_id=movie_id,
-    )
 
 
 if __name__ == "__main__":
     app.run(
-        host=os.getenv("IP", "0.0.0.0"),
-        # port=int(os.getenv("PORT", 8080)),
         debug=True,
     )
