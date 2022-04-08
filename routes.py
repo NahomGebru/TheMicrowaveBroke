@@ -8,7 +8,7 @@ import flask
 from flask import Flask, render_template, session, request, redirect, abort, jsonify
 from flask_login.utils import login_required
 from Userfetch import login_required
-from models import Ingredients, User, Filters
+from models import Ingredients, Recipes, User, Filters
 from termcolor import colored
 from dotenv import find_dotenv, load_dotenv
 from spoonacular import recipe_search
@@ -29,7 +29,6 @@ bp = flask.Blueprint(
 @bp.route("/react")
 def new_page():
     return flask.render_template("index.html")
-    
 app.register_blueprint(bp)
 
 
@@ -120,6 +119,26 @@ def getFilter():
             for filter in userFilters
         ]
     )
+
+
+@app.route("/save_recipes", methods=["POST"])
+def save_recipes():
+    data = flask.request.json
+    user_recipes = Recipes.query.filter_by(googleId=session["user_id"]).all()
+    new_recipes = [
+        recipes(
+            googleId=session["user_id"],
+            imageTitle=s["imageTitle"],
+            recipeLink=s["recipeLink"],
+        )
+        for s in data
+    ]
+    for recipes in user_recipes:
+        db.session.delete(recipes)
+    for recipes in new_recipes:
+        db.session.add(recipes)
+    db.session.commit()
+    return flask.jsonify("Recipes successfully saved")
 
 
 @app.route("/save_ingredients", methods=["POST"])
@@ -234,30 +253,6 @@ def logout():
     session.clear()
     return flask.redirect("/login")
 
-
-"""
-@app.route("/index")
-@login_required
-def index():
-    movie_id = random.choice(MOVIE_IDS)
-
-    # API calls
-    (title, tagline, genre, poster_image) = get_movie_data(movie_id)
-    wikipedia_url = get_wiki_link(title)
-
-    ratings = Rating.query.filter_by(movie_id=movie_id).all()
-
-    return flask.render_template(
-        "main.html",
-        title=title,
-        tagline=tagline,
-        genre=genre,
-        poster_image=poster_image,
-        wiki_url=wikipedia_url,
-        ratings=ratings,
-        movie_id=movie_id,
-    )
-"""
 
 
 if __name__ == "__main__":
