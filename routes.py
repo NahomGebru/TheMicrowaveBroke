@@ -11,6 +11,7 @@ from Userfetch import login_required
 from models import Ingredients, User, Filters
 from termcolor import colored
 from dotenv import find_dotenv, load_dotenv
+from spoonacular import recipe_search
 
 load_dotenv(find_dotenv())
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
@@ -25,11 +26,10 @@ bp = flask.Blueprint(
 )
 
 
-@bp.route("/new_page")
+@bp.route("/react")
 def new_page():
     return flask.render_template("index.html")
-
-
+    
 app.register_blueprint(bp)
 
 
@@ -61,7 +61,7 @@ def google_authorized():
     ).json()
     user = User.query.filter_by(googleId=str(r["id"])).all()
     print(user)
-    print(user[0])
+    # print(user[0]) this print check will cause a index out of bounds
     if len(user) != 0:
         session["user_id"] = user[0].googleId
         session["name"] = user[0].actualName
@@ -79,7 +79,7 @@ def google_authorized():
 
     if session.get("next"):
         return redirect(session.get("next"))
-    return redirect("/")
+    return redirect("/react")
 
 
 @app.route("/get_userinfo")
@@ -197,10 +197,35 @@ def filter_list():
     return flask.redirect("index")
 
 
+@app.route("/get_recipes")
+def get_recipes():
+    data = flask.request.form
+    ingredients = data.get("ingredients")
+    cuisine = data.get("cuisine")
+    diet = data.get("diet")
+    intolerances = data.get("intolerances")
+
+    (recipe_titles, recipe_pictures, recipe_links) = recipe_search(
+        ingredients, cuisine, diet, intolerances
+    )
+
+    jsonifyhelper = []
+    for i in range(len(recipe_titles)):
+        jsonifyhelper.append(
+            {
+                "recipe_title": recipe_titles[i],
+                "recipe_picture": recipe_pictures[i],
+                "recipe_link": recipe_links[i],
+            }
+        )
+
+    return flask.jsonify(jsonifyhelper)
+
+
 @app.route("/")
 @login_required
 def index():
-    return "Success"
+    return flask.redirect("/react")
 
 
 @app.route("/logout")
