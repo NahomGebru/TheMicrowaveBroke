@@ -1,7 +1,13 @@
-import flask
+# pylint: disable=import-error
+
+"""
+Database.
+"""
+
 import os
-from flask_sqlalchemy import SQLAlchemy
-from dotenv import find_dotenv, load_dotenv
+import flask
+from flask_sqlalchemy import SQLAlchemy 
+from dotenv import find_dotenv, load_dotenv  
 
 load_dotenv(find_dotenv())
 

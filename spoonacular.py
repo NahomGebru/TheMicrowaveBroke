@@ -1,9 +1,12 @@
+# pylint: disable=import-error
+"""
+Handles Spoonacular API Calls
+"""
 import os
 import requests
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
-
 
 def recipe_search(ingredients, cuisine, diet, intolerances):
     API_KEY = os.getenv("SPOON_API_KEY")

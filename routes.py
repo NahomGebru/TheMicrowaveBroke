@@ -1,3 +1,7 @@
+# pylint: disable=import-error
+"""
+Handles App routes.
+"""
 from crypt import methods
 from pickle import GET
 from app import app, db
@@ -7,7 +11,7 @@ import requests
 import flask
 from flask import Flask, render_template, session, request, redirect, abort, jsonify
 from flask_login.utils import login_required
-from Userfetch import login_required
+from userfetch import login_required
 from models import Ingredients, Recipes, User, Filters
 from termcolor import colored
 from dotenv import find_dotenv, load_dotenv
