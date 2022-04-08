@@ -1,3 +1,4 @@
+# pylint: disable=import-error
 from crypt import methods
 from pickle import GET
 from app import app, db
