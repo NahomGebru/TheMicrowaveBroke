@@ -1,4 +1,7 @@
 # pylint: disable=import-error
+"""
+Mock unit tests
+"""
 import unittest
 from unittest import mock
 from unittest.mock import MagicMock, patch

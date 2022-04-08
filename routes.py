@@ -1,4 +1,7 @@
 # pylint: disable=import-error
+"""
+Handles App routes.
+"""
 from crypt import methods
 from pickle import GET
 from app import app, db
