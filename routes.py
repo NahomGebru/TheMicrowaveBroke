@@ -11,6 +11,7 @@ from Userfetch import login_required
 from models import Ingredients, User, Filters
 from termcolor import colored
 from dotenv import find_dotenv, load_dotenv
+from spoonacular import recipe_search
 
 load_dotenv(find_dotenv())
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
@@ -194,6 +195,31 @@ def filter_list():
     db.session.add(new_filter)
     db.session.commit()
     return flask.redirect("index")
+
+
+@app.route("/get_recipes")
+def get_recipes():
+    data = flask.request.form
+    ingredients = data.get("ingredients")
+    cuisine = data.get("cuisine")
+    diet = data.get("diet")
+    intolerances = data.get("intolerances")
+
+    (recipe_titles, recipe_pictures, recipe_links) = recipe_search(
+        ingredients, cuisine, diet, intolerances
+    )
+
+    jsonifyhelper = []
+    for i in range(len(recipe_titles)):
+        jsonifyhelper.append(
+            {
+                "recipe_title": recipe_titles[i],
+                "recipe_picture": recipe_pictures[i],
+                "recipe_link": recipe_links[i],
+            }
+        )
+
+    return flask.jsonify(jsonifyhelper)
 
 
 @app.route("/")
