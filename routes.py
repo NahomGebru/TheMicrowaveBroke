@@ -60,7 +60,7 @@ def google_authorized():
     ).json()
     user = User.query.filter_by(googleId=str(r["id"])).all()
     print(user)
-    print(user[0])
+    # print(user[0]) this print check will cause a index out of bounds
     if len(user) != 0:
         session["user_id"] = user[0].googleId
         session["name"] = user[0].actualName
@@ -78,7 +78,7 @@ def google_authorized():
 
     if session.get("next"):
         return redirect(session.get("next"))
-    return redirect("/")
+    return redirect("/react")
 
 
 @app.route("/get_userinfo")
@@ -199,7 +199,7 @@ def filter_list():
 @app.route("/")
 @login_required
 def index():
-    return "Success"
+    return flask.redirect("/react")
 
 
 @app.route("/logout")

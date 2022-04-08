@@ -25,7 +25,7 @@ function App() {
 
 	let handleChange = (i, e) => {
 		let newFormValues = [...ingredientList];
-		newFormValues[i][e.target.ingredient] = e.target.value;
+		newFormValues[i].ingredient = e.target.value;
 		setIngredientList(newFormValues);
 	};
 
@@ -41,6 +41,7 @@ function App() {
 
 	let handleSubmit = (event) => {
 		event.preventDefault();
+		setGetRecipe(true);
 		alert(JSON.stringify(ingredientList));
 	};
 
