@@ -1,18 +1,18 @@
 [MASTER]
 disable=
     C0114, # missing-module-docstring
-    C0115,
-    C0116,
-    W0611,
-    C0303,
-    C0304,
-    R0903,
-    C0103,
-    E0601,
-    C0411,
-    C0301,
-    W0404,
-    C0200,
-    C0305,
-    R0914,
-    E0401
+    C0115, # missing-class-docstring
+    C0116, # missing-function-docstring
+    W0611, # unused-imports
+    C0303, # trailing-whitespace
+    C0304, # missing-final-newline
+    R0903, # too few public methods
+    C0103, # invalid-name
+    E0601, # used-before-assignment
+    C0411, # wrong-import-order
+    C0301, # line-too-long
+    W0404, # reimported
+    C0200, # consider-using-enumerate
+    C0305, # trailing-newlines
+    R0914, # too-mainy-locals
+    E0401  # import-error
