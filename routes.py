@@ -219,7 +219,8 @@ def get_recipes():
                 "recipe_link": recipe_links[i],
             }
         )
-
+    print("JSON sent to front end: ")
+    print(jsonifyhelper)
     return flask.jsonify(jsonifyhelper)
 
 

@@ -2,6 +2,16 @@
 	text-align: center;
 }
 
+img {
+	/* float: left; */
+	max-width: 20%;
+	max-height: 20%;
+}
+
+ol {
+	background: #99ffaf;
+	padding: 20px;
+}
 .form-inline {
 	display: flex;
 	flex-flow: row wrap;

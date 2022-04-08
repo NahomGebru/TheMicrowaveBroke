@@ -1,10 +1,12 @@
 import "./App.css";
 import { useState, useEffect } from "react";
+import { Recipes } from "./Recipes.js";
 // import { Review } from "./Review.js";
 
 function App() {
 	// const [val, setVal] = useState([]);
 	const [ingredientList, setIngredientList] = useState([{ ingredient: "" }]);
+	const [recipeList, setRecipeList] = useState([]);
 	const [getRecipe, setGetRecipe] = useState(false);
 
 	// function handleDelete(i) {
@@ -39,6 +41,10 @@ function App() {
 		setIngredientList(newFormValues);
 	};
 
+	let handleBack = () => {
+		setGetRecipe(false);
+	};
+
 	let handleSubmit = (event) => {
 		event.preventDefault();
 		let newFormValues = [...ingredientList];
@@ -57,6 +63,7 @@ function App() {
 			intolerances: [],
 		};
 
+		// First fetch: sends the ingredient parameters to back-end/API
 		fetch("/get_recipes", {
 			method: "POST",
 			headers: {
@@ -67,10 +74,19 @@ function App() {
 			.then((response) => response.json())
 			.then((data) => {
 				console.log(data);
+				setRecipeList(data);
 			});
 		setGetRecipe(true);
 		alert(JSON.stringify(sendJson));
 	};
+
+	const listRecipe = recipeList.map((recipe, i) => (
+		<Recipes
+			recipe_title={recipe.recipe_title}
+			recipe_picture={recipe.recipe_picture}
+			recipe_link={recipe.recipe_link}
+		/>
+	));
 
 	// function onClickSave() {
 	// 	fetch("/save_reviews", {
@@ -156,8 +172,8 @@ function App() {
 		return (
 			<div className="App">
 				<h1>Recipe Results:</h1>
-				{/* {reviews} */}
-				{/* <button onClick={onClickSave}>Save Recipes</button> */}
+				<ol>{listRecipe}</ol>
+				<button onClick={() => handleBack()}>Go Back</button>
 			</div>
 		);
 	}
