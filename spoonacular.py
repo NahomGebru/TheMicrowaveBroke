@@ -18,10 +18,17 @@ def recipe_search(ingredients, cuisine, diet, intolerances):
         "apiKey": API_KEY,
         "ingredients": param_Ingredients,
         "sort": "min-missing-ingrediants",
-        "cuisine": param_cuisine,
-        "diet": param_diet,
-        "intolerances": param_intolerances,
     }
+
+    # Add params as we need them
+    if param_cuisine:
+        id_params["cuisine"] = param_cuisine
+
+    if param_diet:
+        id_params["diet"] = param_diet
+
+    if param_intolerances:
+        id_params["intolerances"] = param_intolerances
 
     id_response = requests.get(
         "https://api.spoonacular.com/recipes/complexSearch",
