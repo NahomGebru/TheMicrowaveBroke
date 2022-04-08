@@ -80,8 +80,6 @@ def google_authorized():
         return redirect(session.get("next"))
     return redirect("/react")
 
-
-
 @app.route("/get_userinfo")
 @login_required
 def userinfo():

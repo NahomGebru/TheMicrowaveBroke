@@ -114,7 +114,7 @@ function App() {
 	// ));
 
 	// useEffect(() => {
-	// 	fetch("/get_reviews", {
+	// 	fetch("/get_name", {
 	// 		method: "GET",
 	// 		headers: {
 	// 			"Content-Type": "application/json",
@@ -122,7 +122,8 @@ function App() {
 	// 	})
 	// 		.then((response) => response.json())
 	// 		.then((data) => {
-	// 			setVal(data);
+	// 			setUser(data);
+	// 			console.log(data);
 	// 		});
 	// }, []);
 
@@ -141,12 +142,14 @@ function App() {
 								name="ingredient"
 								value={element.ingredient || ""}
 								onChange={(e) => handleChange(index, e)}
+								data-testid="input-ingredient"
 							/>
 							{index ? (
 								<button
 									type="button"
 									className="button remove"
 									onClick={() => removeFormFields(index)}
+									data-testid="remove-button"
 								>
 									Remove
 								</button>
