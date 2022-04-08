@@ -41,8 +41,35 @@ function App() {
 
 	let handleSubmit = (event) => {
 		event.preventDefault();
+		let newFormValues = [...ingredientList];
+		let ingredientArray = [];
+		console.log(newFormValues);
+		for (var i = 0; i < newFormValues.length; i++) {
+			if (newFormValues[i].ingredient) {
+				ingredientArray.push(newFormValues[i].ingredient);
+			}
+		}
+		console.log(ingredientArray);
+		let sendJson = {
+			ingredients: ingredientArray,
+			cuisine: [],
+			diet: [],
+			intolerances: [],
+		};
+
+		fetch("/get_recipes", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(sendJson),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data);
+			});
 		setGetRecipe(true);
-		alert(JSON.stringify(ingredientList));
+		alert(JSON.stringify(sendJson));
 	};
 
 	// function onClickSave() {

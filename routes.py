@@ -217,9 +217,10 @@ def filter_list():
     return flask.redirect("index")
 
 
-@app.route("/get_recipes")
+@app.route("/get_recipes", methods=["POST"])
 def get_recipes():
-    data = flask.request.form
+    data = flask.request.json
+    print(data)
     ingredients = data.get("ingredients")
     cuisine = data.get("cuisine")
     diet = data.get("diet")
