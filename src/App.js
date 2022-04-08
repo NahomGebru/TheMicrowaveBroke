@@ -1,5 +1,7 @@
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/jsx-key */
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Recipes } from "./Recipes.js";
 // import { Review } from "./Review.js";
 
@@ -127,8 +129,9 @@ function App() {
 	// 		});
 	// }, []);
 
-	if (getRecipe == false) {
+	if (getRecipe === false) {
 		return (
+			// eslint-disable-next-line react/react-in-jsx-scope
 			<div>
 				<a href="/logout">Log out</a>
 				<h1>Recipe Generator</h1>
