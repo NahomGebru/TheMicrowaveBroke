@@ -1,4 +1,7 @@
 # pylint: disable=import-error
+"""
+Create Database Tables 
+"""
 from app import db
 from flask_login import UserMixin
 
