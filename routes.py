@@ -8,7 +8,7 @@ import flask
 from flask import Flask, render_template, session, request, redirect, abort, jsonify
 from flask_login.utils import login_required
 from Userfetch import login_required
-from models import Ingredients, User, Filters
+from models import Ingredients, Recipes, User, Filters
 from termcolor import colored
 from dotenv import find_dotenv, load_dotenv
 from spoonacular import recipe_search
@@ -29,7 +29,6 @@ bp = flask.Blueprint(
 @bp.route("/react")
 def new_page():
     return flask.render_template("index.html")
-    
 app.register_blueprint(bp)
 
 
@@ -82,6 +81,7 @@ def google_authorized():
     return redirect("/react")
 
 
+
 @app.route("/get_userinfo")
 @login_required
 def userinfo():
@@ -121,6 +121,26 @@ def getFilter():
             for filter in userFilters
         ]
     )
+
+
+@app.route("/save_recipes", methods=["POST"])
+def save_recipes():
+    data = flask.request.json
+    user_recipes = Recipes.query.filter_by(googleId=session["user_id"]).all()
+    new_recipes = [
+        recipes(
+            googleId=session["user_id"],
+            imageTitle=s["imageTitle"],
+            recipeLink=s["recipeLink"],
+        )
+        for s in data
+    ]
+    for recipes in user_recipes:
+        db.session.delete(recipes)
+    for recipes in new_recipes:
+        db.session.add(recipes)
+    db.session.commit()
+    return flask.jsonify("Recipes successfully saved")
 
 
 @app.route("/save_ingredients", methods=["POST"])

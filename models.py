@@ -24,4 +24,12 @@ class Filters(db.Model):
     dietFilter = db.Column(db.String(300))
 
 
+class Recipes(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    googleId = db.Column(db.String(200))
+    imageTitle = db.Column(db.String(300))
+    recipeLink = db.Column(db.String(300))
+
+
+
 db.create_all()
