@@ -4,7 +4,7 @@
 export function Recipes(props) {
 	return (
 		<li>
-			<div style="float: left">
+			<div>
 				<img src={props.recipe_picture} alt="recipe"></img>
 			</div>
 			<div>
