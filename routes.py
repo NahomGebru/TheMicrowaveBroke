@@ -1,3 +1,7 @@
+# pylint: disable=import-error
+"""
+Handles App routes.
+"""
 from crypt import methods
 from pickle import GET
 from app import app, db
@@ -7,10 +11,11 @@ import requests
 import flask
 from flask import Flask, render_template, session, request, redirect, abort, jsonify
 from flask_login.utils import login_required
-from Userfetch import login_required
-from models import Ingredients, User, Filters
+from userfetch import login_required
+from models import Ingredients, Recipes, User, Filters
 from termcolor import colored
 from dotenv import find_dotenv, load_dotenv
+from spoonacular import recipe_search
 
 load_dotenv(find_dotenv())
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
@@ -25,7 +30,7 @@ bp = flask.Blueprint(
 )
 
 
-@bp.route("/new_page")
+@bp.route("/react")
 def new_page():
     return flask.render_template("index.html")
 
@@ -38,7 +43,7 @@ def login():
     if request.args.get("next"):
         session["next"] = request.args.get("next")
         return redirect(
-            f"https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=http://127.0.0.1:5000/authorized&client_id={GOOGLE_CLIENT_ID}"
+            f"https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=https://themicrowavebroke.herokuapp.com/authorized&client_id={GOOGLE_CLIENT_ID}"
         )
     return render_template("login.html")
 
@@ -52,7 +57,7 @@ def google_authorized():
             "client_secret": GOOGLE_CLIENT_SECRET,
             "code": request.args.get("code"),
             "grant_type": "authorization_code",
-            "redirect_uri": "http://127.0.0.1:5000/authorized",
+            "redirect_uri": "https://themicrowavebroke.herokuapp.com/authorized",
         },
     )
     print(colored(r.json(), "red"))
@@ -61,7 +66,7 @@ def google_authorized():
     ).json()
     user = User.query.filter_by(googleId=str(r["id"])).all()
     print(user)
-    print(user[0])
+    # print(user[0]) this print check will cause a index out of bounds
     if len(user) != 0:
         session["user_id"] = user[0].googleId
         session["name"] = user[0].actualName
@@ -79,7 +84,7 @@ def google_authorized():
 
     if session.get("next"):
         return redirect(session.get("next"))
-    return redirect("/")
+    return redirect("/react")
 
 
 @app.route("/get_userinfo")
@@ -121,6 +126,26 @@ def getFilter():
             for filter in userFilters
         ]
     )
+
+
+@app.route("/save_recipes", methods=["POST"])
+def save_recipes():
+    data = flask.request.json
+    user_recipes = Recipes.query.filter_by(googleId=session["user_id"]).all()
+    new_recipes = [
+        recipes(
+            googleId=session["user_id"],
+            imageTitle=s["imageTitle"],
+            recipeLink=s["recipeLink"],
+        )
+        for s in data
+    ]
+    for recipes in user_recipes:
+        db.session.delete(recipes)
+    for recipes in new_recipes:
+        db.session.add(recipes)
+    db.session.commit()
+    return flask.jsonify("Recipes successfully saved")
 
 
 @app.route("/save_ingredients", methods=["POST"])
@@ -197,10 +222,37 @@ def filter_list():
     return flask.redirect("index")
 
 
+@app.route("/get_recipes", methods=["POST"])
+def get_recipes():
+    data = flask.request.json
+    print(data)
+    ingredients = data.get("ingredients")
+    cuisine = data.get("cuisine")
+    diet = data.get("diet")
+    intolerances = data.get("intolerances")
+
+    (recipe_titles, recipe_pictures, recipe_links) = recipe_search(
+        ingredients, cuisine, diet, intolerances
+    )
+
+    jsonifyhelper = []
+    for i in range(len(recipe_titles)):
+        jsonifyhelper.append(
+            {
+                "recipe_title": recipe_titles[i],
+                "recipe_picture": recipe_pictures[i],
+                "recipe_link": recipe_links[i],
+            }
+        )
+    print("JSON sent to front end: ")
+    print(jsonifyhelper)
+    return flask.jsonify(jsonifyhelper)
+
+
 @app.route("/")
 @login_required
 def index():
-    return "Success"
+    return flask.redirect("/react")
 
 
 @app.route("/logout")
@@ -209,32 +261,7 @@ def logout():
     return flask.redirect("/login")
 
 
-"""
-@app.route("/index")
-@login_required
-def index():
-    movie_id = random.choice(MOVIE_IDS)
-
-    # API calls
-    (title, tagline, genre, poster_image) = get_movie_data(movie_id)
-    wikipedia_url = get_wiki_link(title)
-
-    ratings = Rating.query.filter_by(movie_id=movie_id).all()
-
-    return flask.render_template(
-        "main.html",
-        title=title,
-        tagline=tagline,
-        genre=genre,
-        poster_image=poster_image,
-        wiki_url=wikipedia_url,
-        ratings=ratings,
-        movie_id=movie_id,
-    )
-"""
-
-
 if __name__ == "__main__":
     app.run(
-        debug=True,
+        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True
     )
