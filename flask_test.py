@@ -1,3 +1,6 @@
+# pylint: disable=broad-except
+# pylint: disable=consider-using-f-string
+# pylint: disable=redefined-outer-name
 from urllib import response
 
 
