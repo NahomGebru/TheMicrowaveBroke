@@ -3,29 +3,11 @@
 import "./App.css";
 import { useState } from "react";
 import { Recipes } from "./Recipes.js";
-// import { Review } from "./Review.js";
 
 function App() {
-	// const [val, setVal] = useState([]);
 	const [ingredientList, setIngredientList] = useState([{ ingredient: "" }]);
 	const [recipeList, setRecipeList] = useState([]);
 	const [getRecipe, setGetRecipe] = useState(false);
-
-	// function handleDelete(i) {
-	// 	setVal([...val.slice(0, i), ...val.slice(i + 1)]);
-	// }
-
-	// function handleRatingChange(i, e) {
-	// 	const newReviews = val.slice();
-	// 	newReviews[i].rating = e.target.value;
-	// 	setVal(newReviews);
-	// }
-
-	// function handleCommentChange(i, e) {
-	// 	const newReviews = val.slice();
-	// 	newReviews[i].comment = e.target.value;
-	// 	setVal(newReviews);
-	// }
 
 	let handleChange = (i, e) => {
 		let newFormValues = [...ingredientList];
@@ -89,45 +71,6 @@ function App() {
 			recipe_link={recipe.recipe_link}
 		/>
 	));
-
-	// function onClickSave() {
-	// 	fetch("/save_reviews", {
-	// 		method: "POST",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 		},
-	// 		body: JSON.stringify(val),
-	// 	})
-	// 		.then((response) => response.json())
-	// 		.then((data) => {
-	// 			console.log(data);
-	// 		});
-	// }
-
-	// const reviews = val.map((review, i) => (
-	// 	<Review
-	// 		movieID={review.movie_id}
-	// 		rating={review.rating}
-	// 		comment={review.comment}
-	// 		onDelete={() => handleDelete(i)}
-	// 		onEdit={(e) => handleCommentChange(i, e)}
-	// 		onRate={(e) => handleRatingChange(i, e)}
-	// 	/>
-	// ));
-
-	// useEffect(() => {
-	// 	fetch("/get_name", {
-	// 		method: "GET",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 		},
-	// 	})
-	// 		.then((response) => response.json())
-	// 		.then((data) => {
-	// 			setUser(data);
-	// 			console.log(data);
-	// 		});
-	// }, []);
 
 	if (getRecipe === false) {
 		return (
