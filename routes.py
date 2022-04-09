@@ -33,8 +33,6 @@ bp = flask.Blueprint(
 @bp.route("/react")
 def new_page():
     return flask.render_template("index.html")
-
-
 app.register_blueprint(bp)
 
 
@@ -85,7 +83,6 @@ def google_authorized():
     if session.get("next"):
         return redirect(session.get("next"))
     return redirect("/react")
-
 
 @app.route("/get_userinfo")
 @login_required
@@ -260,8 +257,9 @@ def logout():
     session.clear()
     return flask.redirect("/login")
 
-
 if __name__ == "__main__":
     app.run(
-        host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", 8080)), debug=True
+        host=os.getenv("IP", "0.0.0.0"),
+        port=int(os.getenv("PORT", 8080)),
+        debug=True
     )
