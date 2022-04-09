@@ -1,12 +1,7 @@
-## Setup Instructions
-1. `pip3 install -r requirements.txt`
-2. Create a `.env` file in the top-level directory and enter the following as its contents:
-```
-export TMDB_API_KEY="<YOUR API KEY>"
-export DATABASE_URL="<YOUR POSTGRESQL DB URL>"
-```
+# Recipe Generator 
+### Overview
+This web-app is currently <b>UNDER CONSTRUCTION</b>. 
+The main objective of the app is to generate a recipe out of the recipes
+present in the kitchen having salt, sugar and the likes as default ingredients.
 
-
-## To run the app
-1. Run `python3 routes.py`
-
+Heroku URL: https://themicrowavebroke.herokuapp.com/
