@@ -119,7 +119,7 @@ function App() {
 		);
 	} else {
 		return (
-			<div>
+			<div className="App">
 				<h1>Recipe Results:</h1>
 				<ol>{listRecipe}</ol>
 				<button onClick={() => handleBack()}>Go Back</button>
