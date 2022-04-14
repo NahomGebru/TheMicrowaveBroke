@@ -1,9 +1,12 @@
+# pylint: disable=import-error
+"""
+Handles Spoonacular API Calls
+"""
 import os
 import requests
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
-
 
 def recipe_search(ingredients, cuisine, diet, intolerances):
     API_KEY = os.getenv("SPOON_API_KEY")
@@ -18,10 +21,17 @@ def recipe_search(ingredients, cuisine, diet, intolerances):
         "apiKey": API_KEY,
         "ingredients": param_Ingredients,
         "sort": "min-missing-ingrediants",
-        "cuisine": param_cuisine,
-        "diet": param_diet,
-        "intolerances": param_intolerances,
     }
+
+    # Add params as we need them
+    if param_cuisine:
+        id_params["cuisine"] = param_cuisine
+
+    if param_diet:
+        id_params["diet"] = param_diet
+
+    if param_intolerances:
+        id_params["intolerances"] = param_intolerances
 
     id_response = requests.get(
         "https://api.spoonacular.com/recipes/complexSearch",
@@ -31,6 +41,8 @@ def recipe_search(ingredients, cuisine, diet, intolerances):
     id_response_json = id_response.json()
 
     int_idlist = []
+    print("Currently in spoonacular.py")
+    print("ingredients recieved: "+param_Ingredients)
     for i in range(len(id_response_json["results"])):
         int_idlist.append(id_response_json["results"][i]["id"])
 
@@ -59,3 +71,5 @@ def recipe_search(ingredients, cuisine, diet, intolerances):
         recipe_links.append(recipe_response_json[i]["sourceUrl"])
 
     return (recipe_titles, recipe_pictures, recipe_links)
+    
+

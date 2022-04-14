@@ -1,27 +1,13 @@
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable react/jsx-key */
 import "./App.css";
-import { useState, useEffect } from "react";
-// import { Review } from "./Review.js";
+import { useState } from "react";
+import { Recipes } from "./Recipes.js";
 
 function App() {
-  // const [val, setVal] = useState([]);
   const [ingredientList, setIngredientList] = useState([{ ingredient: "" }]);
+  const [recipeList, setRecipeList] = useState([]);
   const [getRecipe, setGetRecipe] = useState(false);
-
-  // function handleDelete(i) {
-  // 	setVal([...val.slice(0, i), ...val.slice(i + 1)]);
-  // }
-
-  // function handleRatingChange(i, e) {
-  // 	const newReviews = val.slice();
-  // 	newReviews[i].rating = e.target.value;
-  // 	setVal(newReviews);
-  // }
-
-  // function handleCommentChange(i, e) {
-  // 	const newReviews = val.slice();
-  // 	newReviews[i].comment = e.target.value;
-  // 	setVal(newReviews);
-  // }
 
   let handleChange = (i, e) => {
     let newFormValues = [...ingredientList];
@@ -39,63 +25,56 @@ function App() {
     setIngredientList(newFormValues);
   };
 
-  let handleSubmit = (event) => {
-    event.preventDefault();
-    // fetch("/spoonacular", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(val),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   });
-    setGetRecipe(true);
-    alert(JSON.stringify(ingredientList));
+  let handleBack = () => {
+    setGetRecipe(false);
   };
 
-  // function onClickSave() {
-  // 	fetch("/save_reviews", {
-  // 		method: "POST",
-  // 		headers: {
-  // 			"Content-Type": "application/json",
-  // 		},
-  // 		body: JSON.stringify(val),
-  // 	})
-  // 		.then((response) => response.json())
-  // 		.then((data) => {
-  // 			console.log(data);
-  // 		});
-  // }
+  let handleSubmit = (event) => {
+    event.preventDefault();
+    let newFormValues = [...ingredientList];
+    let ingredientArray = [];
+    console.log(newFormValues);
+    for (var i = 0; i < newFormValues.length; i++) {
+      if (newFormValues[i].ingredient) {
+        ingredientArray.push(newFormValues[i].ingredient);
+      }
+    }
+    console.log(ingredientArray);
+    let sendJson = {
+      ingredients: ingredientArray,
+      cuisine: [],
+      diet: [],
+      intolerances: [],
+    };
 
-  // const reviews = val.map((review, i) => (
-  // 	<Review
-  // 		movieID={review.movie_id}
-  // 		rating={review.rating}
-  // 		comment={review.comment}
-  // 		onDelete={() => handleDelete(i)}
-  // 		onEdit={(e) => handleCommentChange(i, e)}
-  // 		onRate={(e) => handleRatingChange(i, e)}
-  // 	/>
-  // ));
+    // First fetch: sends the ingredient parameters to back-end/API
+    fetch("/get_recipes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sendJson),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setRecipeList(data);
+      });
+    setGetRecipe(true);
+    alert(JSON.stringify(sendJson));
+  };
 
-  // useEffect(() => {
-  // 	fetch("/get_reviews", {
-  // 		method: "GET",
-  // 		headers: {
-  // 			"Content-Type": "application/json",
-  // 		},
-  // 	})
-  // 		.then((response) => response.json())
-  // 		.then((data) => {
-  // 			setVal(data);
-  // 		});
-  // }, []);
+  const listRecipe = recipeList.map((recipe, i) => (
+    <Recipes
+      recipe_title={recipe.recipe_title}
+      recipe_picture={recipe.recipe_picture}
+      recipe_link={recipe.recipe_link}
+    />
+  ));
 
-  if (getRecipe == false) {
+  if (getRecipe === false) {
     return (
+      // eslint-disable-next-line react/react-in-jsx-scope
       <div>
         <a href="/logout">Log out</a>
         <h1>Recipe Generator</h1>
@@ -109,12 +88,14 @@ function App() {
                 name="ingredient"
                 value={element.ingredient || ""}
                 onChange={(e) => handleChange(index, e)}
+                data-testid="input-ingredient"
               />
               {index ? (
                 <button
                   type="button"
                   className="button remove"
                   onClick={() => removeFormFields(index)}
+                  data-testid="remove-button"
                 >
                   Remove
                 </button>
@@ -138,10 +119,10 @@ function App() {
     );
   } else {
     return (
-      <div className="App">
+      <div>
         <h1>Recipe Results:</h1>
-        {/* {reviews} */}
-        {/* <button onClick={onClickSave}>Save Recipes</button> */}
+        <ol>{listRecipe}</ol>
+        <button onClick={() => handleBack()}>Go Back</button>
       </div>
     );
   }

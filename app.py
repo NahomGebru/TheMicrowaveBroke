@@ -1,5 +1,11 @@
-import flask
+# pylint: disable=import-error
+
+"""
+Database.
+"""
+
 import os
+import flask
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import find_dotenv, load_dotenv
 
@@ -13,6 +19,5 @@ if db_url.startswith("postgres://"):
 app.config["SQLALCHEMY_DATABASE_URI"] = db_url
 # Gets rid of a warning
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = b"I am a secret key!"  # don't defraud my app ok?
 
 db = SQLAlchemy(app)
