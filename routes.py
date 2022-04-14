@@ -1,4 +1,5 @@
 from app import app, db
+from spoonacular import recipe_search
 import random
 import os
 
