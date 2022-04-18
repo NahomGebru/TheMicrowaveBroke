@@ -41,7 +41,7 @@ def login():
     if request.args.get("next"):
         session["next"] = request.args.get("next")
         return redirect(
-            f"https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=https://themicrowavebroke.herokuapp.com/authorized&client_id={GOOGLE_CLIENT_ID}"
+            f"https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=http://127.0.0.1:5000/authorized&client_id={GOOGLE_CLIENT_ID}"
         )
     return render_template("login.html")
 
@@ -55,7 +55,7 @@ def google_authorized():
             "client_secret": GOOGLE_CLIENT_SECRET,
             "code": request.args.get("code"),
             "grant_type": "authorization_code",
-            "redirect_uri": "https://themicrowavebroke.herokuapp.com/authorized",
+            "redirect_uri": "http://127.0.0.1:5000/authorized",
         },
     )
     print(colored(r.json(), "red"))
