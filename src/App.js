@@ -80,6 +80,21 @@ function App() {
 				<h1>Recipe Generator</h1>
 				<p>Please enter your list of ingredients!</p>
 				<form onSubmit={handleSubmit}>
+					<div>
+						<label>Cuisine: </label>
+						<input type="checkbox" id="asian" name="asian" value="asian" />
+						<label>Asian |</label>
+						<input type="checkbox" name="mexican" value="mexican" />
+						<label>Mexican |</label>
+						<br></br>
+						<label>Allergies: </label>
+						<input type="checkbox" name="peanut" value="peanut" />
+						<label>Peanuts |</label>
+						<input type="checkbox" name="dairy" value="dairy" />
+						<label>Dairy |</label>
+					</div>
+					<br></br>
+					<label>Ingredients:</label>
 					{ingredientList.map((element, index) => (
 						<div className="form-inline" key={index}>
 							<label>{index + 1}.</label>
