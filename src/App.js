@@ -153,10 +153,15 @@ function App() {
 	if (getRecipe === false) {
 		return (
 			// eslint-disable-next-line react/react-in-jsx-scope
-			<div>
-				<a href="/logout">Log out</a>
-				<h1>Recipe Generator</h1>
-				<p>Please enter your list of ingredients!</p>
+			<div className="inputIngredient">
+				<div className="container">
+					<h2 className="title">
+						<span className="title-word title-word-1">Provide </span>
+						<span className="title-word title-word-2">your </span>
+						<span className="title-word title-word-3">Ingredients </span>
+						<span className="title-word title-word-4">here:</span>
+					</h2>
+				</div>
 				<form onSubmit={handleSubmit}>
 					<div>
 						<label>Cuisine: </label>
@@ -219,8 +224,10 @@ function App() {
 						<div className="form-inline" key={index}>
 							<label>{index + 1}.</label>
 							<input
+								className="searchTerm"
 								type="text"
 								name="ingredient"
+								placeholder="Type in your ingredient..."
 								value={element.ingredient || ""}
 								onChange={(e) => handleChange(index, e)}
 								data-testid="input-ingredient"
@@ -228,25 +235,25 @@ function App() {
 							{index ? (
 								<button
 									type="button"
-									className="button remove"
+									className="buttonRemove"
 									onClick={() => removeFormFields(index)}
 									data-testid="remove-button"
 								>
-									Remove
+									<i className="fa fa-trash"></i>
 								</button>
 							) : null}
 						</div>
 					))}
 					<div>
 						<button
-							className="button add"
+							className="buttonAdd"
 							type="button"
 							onClick={() => addFormFields()}
 						>
-							Add
+							<i className="fa fa-plus"></i>
 						</button>
-						<button className="button submit" type="submit">
-							Submit
+						<button className="buttonSubmit" type="submit">
+							<i className="fa fa-search"></i>
 						</button>
 					</div>
 				</form>
@@ -256,8 +263,10 @@ function App() {
 		return (
 			<div>
 				<h1>Recipe Results:</h1>
-				<ol>{listRecipe}</ol>
-				<button onClick={() => handleBack()}>Go Back</button>
+				<div className="grid-container">
+					<ol className="grid-item">{listRecipe}</ol>
+				</div>
+				<button className="backButton" onClick={() => handleBack()}>Back</button>
 			</div>
 		);
 	}
