@@ -43,8 +43,7 @@ def recipe_search(ingredients, cuisine, diet, intolerances):
     id_response_json = id_response.json()
 
     int_idlist = []
-    print("Currently in spoonacular.py")
-    print("ingredients recieved: " + param_Ingredients)
+
     for i in range(len(id_response_json["results"])):
         int_idlist.append(id_response_json["results"][i]["id"])
 
