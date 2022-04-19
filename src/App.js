@@ -69,6 +69,26 @@ function App() {
 		setGetRecipe(false);
 	};
 
+	let handleSave = (recipe) => {
+		let sendJson = {
+			imageTitle: recipe.recipe_picture,
+			recipeLink: recipe.recipe_link,
+		};
+		console.log(sendJson);
+		fetch("/save_recipes", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(sendJson),
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data);
+			});
+		alert("Recipe Saved");
+	};
+
 	// handle submit form
 	let handleSubmit = (event) => {
 		event.preventDefault();
@@ -109,7 +129,7 @@ function App() {
 		}
 
 		// Handles allergy JSON Array
-		newFormValues = [...dietList];
+		newFormValues = [...allergyList];
 		let allergyArray = [];
 		for (var i = 0; i < newFormValues.length; i++) {
 			if (newFormValues[i] == true) {
@@ -139,7 +159,6 @@ function App() {
 				setRecipeList(data);
 			});
 		setGetRecipe(true);
-		alert(JSON.stringify(sendJson));
 	};
 
 	const listRecipe = recipeList.map((recipe, i) => (
@@ -147,6 +166,7 @@ function App() {
 			recipe_title={recipe.recipe_title}
 			recipe_picture={recipe.recipe_picture}
 			recipe_link={recipe.recipe_link}
+			save_recipe={() => handleSave(recipe)}
 		/>
 	));
 
@@ -266,7 +286,9 @@ function App() {
 				<div className="grid-container">
 					<ol className="grid-item">{listRecipe}</ol>
 				</div>
-				<button className="backButton" onClick={() => handleBack()}>Back</button>
+				<button className="backButton" onClick={() => handleBack()}>
+					Back
+				</button>
 			</div>
 		);
 	}

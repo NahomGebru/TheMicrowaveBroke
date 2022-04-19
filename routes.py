@@ -22,7 +22,6 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
-
 bp = flask.Blueprint(
     "bp",
     __name__,
@@ -141,12 +140,13 @@ def getFilter():
 @app.route("/save_recipes", methods=["POST"])
 def save_recipes():
     data = flask.request.json
+    print(data)
     user_recipes = Recipes.query.filter_by(googleId=session["user_id"]).all()
     new_recipes = [
-        recipes(
+        Recipes(
             googleId=session["user_id"],
-            imageTitle=s["imageTitle"],
-            recipeLink=s["recipeLink"],
+            imageTitle=data.get("imageTitle"),
+            recipeLink=data.get("recipeLink"),
         )
         for s in data
     ]
