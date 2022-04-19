@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+<link rel="stylesheet" type="text/css" href="static/login.css" />
 
 <head>
     <!-- Required meta tags -->
@@ -28,10 +29,14 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border: 5px outset rgb(237, 107, 64)"
+        style="color: darkgoldenrod;">
         <a class="navbar-brand" href="/">
-            <img src="/static/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
-            Recipe Generator
+            <div style="border: 5px outset rgb(237, 107, 64)" id="container">
+                <img src="/static/logo.png" width="70" height="70" class="d-inline-block align-middle" alt=""
+                    loading="lazy">
+                Recipe Generator
+            </div>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,18 +48,17 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
+                <a class="nav-link" href="/about_us">About Us <span class="sr-only">(current)</span></a>
             </ul>
-            {% if session['user_id'] %}
             <li class="form-inline nav-item dropdown active">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="{{ session['name'] }}" style="border-radius: 50%;" width="40px" height="40px">
+                <a class="btn btn-outline-dark" href="/" role="button"
+                    style="text-transform:none; color: rgb(10, 22, 33);">
+                    <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in"
+                        src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+                    Login with Google
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="/logout" style="color: red;">Log Out</a>
-                </div>
-            </li>
-            {% endif %}
+        </div>
+        </li>
         </div>
     </nav>
     <div class="container">

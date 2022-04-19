@@ -8,6 +8,7 @@ from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
 
+
 def recipe_search(ingredients, cuisine, diet, intolerances):
     API_KEY = os.getenv("SPOON_API_KEY")
 
@@ -19,8 +20,9 @@ def recipe_search(ingredients, cuisine, diet, intolerances):
 
     id_params = {
         "apiKey": API_KEY,
-        "ingredients": param_Ingredients,
-        "sort": "min-missing-ingrediants",
+        "includeIngredients": param_Ingredients,
+        "sort": "max-used-ingredients",
+        "sortDirection": "desc",
     }
 
     # Add params as we need them
@@ -42,7 +44,7 @@ def recipe_search(ingredients, cuisine, diet, intolerances):
 
     int_idlist = []
     print("Currently in spoonacular.py")
-    print("ingredients recieved: "+param_Ingredients)
+    print("ingredients recieved: " + param_Ingredients)
     for i in range(len(id_response_json["results"])):
         int_idlist.append(id_response_json["results"][i]["id"])
 
@@ -71,5 +73,3 @@ def recipe_search(ingredients, cuisine, diet, intolerances):
         recipe_links.append(recipe_response_json[i]["sourceUrl"])
 
     return (recipe_titles, recipe_pictures, recipe_links)
-    
-

@@ -2,6 +2,168 @@
 	text-align: center;
 }
 
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+.inputIngredient {
+	text-align: center;
+	width: 400px;
+	margin: 0, auto;
+	border: 5px inset rgb(237, 107, 64);
+	background: burlywood;
+}
+
+.grid-container {
+	display: grid;
+	row-gap: 20px;
+	column-gap: 50px;
+	grid-template-columns: auto auto auto;
+	background-color: burlywood;
+	padding: 10px;
+}
+
+.grid-item {
+	margin-left: 20%;
+	background-color: antiquewhite;
+	border: 1px solid black;
+	padding: 20px;
+	font-size: 30px;
+	text-align: center;
+}
+
+form {
+	align-content: center;
+}
+
+.title-word {
+	animation: color-animation 4s linear infinite;
+}
+
+.title-word-1 {
+	--color-1: #ff5900;
+	--color-2: #00b3ff;
+	--color-3: #ff0400;
+}
+
+.title-word-2 {
+	--color-1: #ffae00;
+	--color-2: #00ffe1;
+	--color-3: #004549;
+}
+
+.title-word-3 {
+	--color-1: #ccfaf5;
+	--color-2: #ffaead;
+	--color-3: #b1fff6;
+}
+
+.title-word-4 {
+	--color-1: #3D8DAE;
+	--color-2: #ff9359;
+	--color-3: #ff9d9b;
+}
+
+@keyframes color-animation {
+	0% {
+		color: var(--color-1)
+	}
+
+	32% {
+		color: var(--color-1)
+	}
+
+	33% {
+		color: var(--color-2)
+	}
+
+	65% {
+		color: var(--color-2)
+	}
+
+	66% {
+		color: var(--color-3)
+	}
+
+	99% {
+		color: var(--color-3)
+	}
+
+	100% {
+		color: var(--color-1)
+	}
+}
+
+/* Here are just some visual styles. 🖌 */
+
+.title {
+	font-family: "Montserrat", sans-serif;
+	font-weight: 300;
+	font-size: 40px;
+	text-transform: uppercase;
+}
+
+.searchTerm {
+	width: fit-content;
+	border: 3px solid rgb(237, 107, 64);
+	padding: 5px;
+	height: 20px;
+	border-radius: 5px 5px 5px 5px;
+	outline: none;
+	color: #9DBFAF;
+}
+
+.searchTerm:focus {
+	color: rgb(237, 107, 64);
+}
+
+.buttonSubmit {
+	width: 40px;
+	height: 40px;
+	border: 5px outset rgb(237, 107, 64);
+	background: rgb(237, 107, 64);
+	text-align: center;
+	color: #fff;
+	border-radius: 5px 5px 5px 5px;
+	cursor: pointer;
+	font-size: 20px;
+}
+
+.buttonAdd {
+	width: 40px;
+	height: 40px;
+	border: 5px outset rgb(237, 107, 64);
+	background: rgb(237, 107, 64);
+	text-align: center;
+	color: #fff;
+	border-radius: 5px 5px 5px 5px;
+	cursor: pointer;
+	font-size: 20px;
+}
+
+.buttonRemove {
+	width: 40px;
+	height: 40px;
+	border: 5px outset rgb(237, 107, 64);
+	background: rgb(237, 107, 64);
+	text-align: center;
+	color: #fff;
+	border-radius: 5px 5px 5px 5px;
+	cursor: pointer;
+	font-size: 20px;
+}
+
+.backButton {
+	width: 80px;
+	height: 40px;
+	border: 5px outset rgb(237, 107, 64);
+	background: rgb(237, 107, 64);
+	text-align: center;
+	color: #fff;
+	border-radius: 5px 5px 5px 5px;
+	cursor: pointer;
+	font-size: 20px;
+}
+
+
 img {
 	/* float: left; */
 	max-width: 20%;
@@ -9,9 +171,10 @@ img {
 }
 
 ol {
-	background: #99ffaf;
+	background: transparent;
 	padding: 20px;
 }
+
 .form-inline {
 	display: flex;
 	flex-flow: row wrap;
@@ -29,6 +192,7 @@ ol {
 	/* background-color: #fff;
 	border: 1px solid #ddd; */
 }
+
 .App-logo {
 	height: 40vmin;
 	pointer-events: none;
@@ -59,6 +223,7 @@ ol {
 	from {
 		transform: rotate(0deg);
 	}
+
 	to {
 		transform: rotate(360deg);
 	}

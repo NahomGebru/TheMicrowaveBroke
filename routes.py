@@ -33,6 +33,8 @@ bp = flask.Blueprint(
 @bp.route("/react")
 def new_page():
     return flask.render_template("index.html")
+
+
 app.register_blueprint(bp)
 
 
@@ -41,7 +43,7 @@ def login():
     if request.args.get("next"):
         session["next"] = request.args.get("next")
         return redirect(
-            f"https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=https://themicrowavebroke.herokuapp.com/authorized&client_id={GOOGLE_CLIENT_ID}"
+            f"https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=http://127.0.0.1:5000/authorized&client_id={GOOGLE_CLIENT_ID}"
         )
     return render_template("login.html")
 
@@ -55,7 +57,7 @@ def google_authorized():
             "client_secret": GOOGLE_CLIENT_SECRET,
             "code": request.args.get("code"),
             "grant_type": "authorization_code",
-            "redirect_uri": "https://themicrowavebroke.herokuapp.com/authorized",
+            "redirect_uri": "http://127.0.0.1:5000/authorized",
         },
     )
     print(colored(r.json(), "red"))
@@ -83,6 +85,17 @@ def google_authorized():
     if session.get("next"):
         return redirect(session.get("next"))
     return redirect("/react")
+
+
+@app.route("/about_us")
+def AboutUs():
+    return "Under Construction"
+
+
+@app.route("/user_recipes")
+def userRecipe():
+    return "User Recipe"
+
 
 @app.route("/get_userinfo")
 @login_required
@@ -257,9 +270,6 @@ def logout():
     session.clear()
     return flask.redirect("/login")
 
+
 if __name__ == "__main__":
-    app.run(
-        host=os.getenv("IP", "0.0.0.0"),
-        port=int(os.getenv("PORT", 8080)),
-        debug=True
-    )
+    app.run(debug=True)
