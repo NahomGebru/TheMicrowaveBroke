@@ -94,7 +94,7 @@ def AboutUs():
 
 @app.route("/user_recipes")
 def userRecipe():
-    return "User Recipe"
+    return render_template("myrecipes.html")
 
 
 @app.route("/get_userinfo")
