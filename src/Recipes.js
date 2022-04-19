@@ -11,7 +11,7 @@ export function Recipes(props) {
 				<b>Recipe: {props.recipe_title} </b>
 				<br></br>
 				<a href={props.recipe_link}>See Recipe</a>
-				<button>Save Recipe</button>
+				<button onClick={props.save_recipe}>Save Recipe</button>
 			</div>
 		</li>
 	);
