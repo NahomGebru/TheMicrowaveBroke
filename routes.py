@@ -89,7 +89,7 @@ def google_authorized():
 
 @app.route("/about_us")
 def AboutUs():
-    return "Under Construction"
+    return render_template("about.html")
 
 
 @app.route("/user_recipes")
@@ -273,4 +273,3 @@ def logout():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
