@@ -5,9 +5,22 @@ import { useState } from "react";
 import { Recipes } from "./Recipes.js";
 
 function App() {
-	const [ingredientList, setIngredientList] = useState([{ ingredient: "" }]);
-	const [recipeList, setRecipeList] = useState([]);
-	const [getRecipe, setGetRecipe] = useState(false);
+	const cuisineType = ["Asian", "Mexican"];
+	const dietType = ["Vegetarian", "Vegan"];
+	const allergyType = ["Peanut", "Dairy"];
+
+	const [ingredientList, setIngredientList] = useState([{ ingredient: "" }]); //state for storing ingredients
+	const [recipeList, setRecipeList] = useState([]); // state for storing recipe output
+	const [getRecipe, setGetRecipe] = useState(false); // state for rendering results page
+	const [cuisineList, setCuisineList] = useState(
+		new Array(cuisineType.length).fill(false)
+	); //state for cuisine filter
+	const [allergyList, setAllergyList] = useState(
+		new Array(allergyType.length).fill(false)
+	); //state for allergy filter
+	const [dietList, setDietList] = useState(
+		new Array(dietType.length).fill(false)
+	); //state for diet filter
 
 	let handleChange = (i, e) => {
 		let newFormValues = [...ingredientList];
@@ -15,39 +28,104 @@ function App() {
 		setIngredientList(newFormValues);
 	};
 
+	// handles cuisine change
+	let handleCuisine = (e) => {
+		let updatedCheckedState = cuisineList.map((cuisine, index) =>
+			index === e ? !cuisine : cuisine
+		);
+		setCuisineList(updatedCheckedState);
+	};
+
+	// handles diet change
+	let handleDiet = (e) => {
+		let updatedCheckedState = dietList.map((diet, index) =>
+			index === e ? !diet : diet
+		);
+		setDietList(updatedCheckedState);
+	};
+
+	// handles allergy change
+	let handleAllergy = (e) => {
+		let updatedCheckedState = allergyList.map((allergy, index) =>
+			index === e ? !allergy : allergy
+		);
+		setAllergyList(updatedCheckedState);
+	};
+
+	// adds new ingredient fields
 	let addFormFields = () => {
 		setIngredientList([...ingredientList, { ingredient: "" }]);
 	};
 
+	// removes ingredient fields
 	let removeFormFields = (i) => {
 		let newFormValues = [...ingredientList];
 		newFormValues.splice(i, 1);
 		setIngredientList(newFormValues);
 	};
 
+	// handle back button after generating recipe
 	let handleBack = () => {
 		setGetRecipe(false);
 	};
 
+	// handle submit form
 	let handleSubmit = (event) => {
 		event.preventDefault();
+
+		// Handles ingredients JSON Array
 		let newFormValues = [...ingredientList];
 		let ingredientArray = [];
+		console.log("newFormValues for ingredientList:");
 		console.log(newFormValues);
 		for (var i = 0; i < newFormValues.length; i++) {
 			if (newFormValues[i].ingredient) {
 				ingredientArray.push(newFormValues[i].ingredient);
 			}
 		}
+		console.log("output of ingredientArray:");
 		console.log(ingredientArray);
+
+		// Handles cuisine JSON Array
+		newFormValues = [...cuisineList];
+		let cuisineArray = [];
+		console.log("newFormValues for cuisineList:");
+		console.log(newFormValues);
+		for (var i = 0; i < newFormValues.length; i++) {
+			if (newFormValues[i] == true) {
+				cuisineArray.push(cuisineType[i]);
+			}
+		}
+		console.log("output of cuisineArray:");
+		console.log(cuisineArray);
+
+		// Handles diet JSON Array
+		newFormValues = [...dietList];
+		let dietArray = [];
+		for (var i = 0; i < newFormValues.length; i++) {
+			if (newFormValues[i] == true) {
+				dietArray.push(dietType[i]);
+			}
+		}
+
+		// Handles allergy JSON Array
+		newFormValues = [...dietList];
+		let allergyArray = [];
+		for (var i = 0; i < newFormValues.length; i++) {
+			if (newFormValues[i] == true) {
+				allergyArray.push(allergyType[i]);
+			}
+		}
+
+		// Format Array into JSON Format
 		let sendJson = {
 			ingredients: ingredientArray,
-			cuisine: [],
-			diet: [],
-			intolerances: [],
+			cuisine: cuisineArray,
+			diet: dietArray,
+			intolerances: allergyArray,
 		};
 
-		// First fetch: sends the ingredient parameters to back-end/API
+		// Sends the parameters to back-end/API
 		fetch("/get_recipes", {
 			method: "POST",
 			headers: {
@@ -82,16 +160,58 @@ function App() {
 				<form onSubmit={handleSubmit}>
 					<div>
 						<label>Cuisine: </label>
-						<input type="checkbox" id="asian" name="asian" value="asian" />
+						<input
+							type="checkbox"
+							checked={cuisineList[0]}
+							onChange={() => handleCuisine(0)}
+							name="asian"
+							value="asian"
+						/>
 						<label>Asian |</label>
-						<input type="checkbox" name="mexican" value="mexican" />
-						<label>Mexican |</label>
+						<input
+							type="checkbox"
+							checked={cuisineList[1]}
+							onChange={() => handleCuisine(1)}
+							name="mexican"
+							value="mexican"
+						/>
+						<label>Mexican </label>
+						<br></br>
+						<label>Diet: </label>
+						<input
+							type="checkbox"
+							checked={dietList[0]}
+							onChange={() => handleDiet(0)}
+							name="vegetarian"
+							value="vegetarian"
+						/>
+						<label>Vegetarian |</label>
+						<input
+							type="checkbox"
+							checked={dietList[1]}
+							onChange={() => handleDiet(1)}
+							name="vegan"
+							value="vegan"
+						/>
+						<label>Vegan </label>
 						<br></br>
 						<label>Allergies: </label>
-						<input type="checkbox" name="peanut" value="peanut" />
+						<input
+							type="checkbox"
+							checked={allergyList[0]}
+							onChange={() => handleAllergy(0)}
+							name="peanut"
+							value="peanut"
+						/>
 						<label>Peanuts |</label>
-						<input type="checkbox" name="dairy" value="dairy" />
-						<label>Dairy |</label>
+						<input
+							type="checkbox"
+							checked={allergyList[1]}
+							onChange={() => handleAllergy(1)}
+							name="dairy"
+							value="dairy"
+						/>
+						<label>Dairy </label>
 					</div>
 					<br></br>
 					<label>Ingredients:</label>
