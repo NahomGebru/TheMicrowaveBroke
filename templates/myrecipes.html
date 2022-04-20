@@ -1,210 +1,212 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<style>
-			body {
-				padding: 0 2%;
-				color: #2e3e50;
-				background: url("/static/homepage_background.jpg");
-			}
 
-			.X {
-				margin: auto;
-				padding: 1% 2%;
-				max-width: 1440px;
-				border: 5px inset rgb(237, 107, 64);
-				background: burlywood;
-				box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
-			}
+<head>
+    <style>
+        body {
+            padding: 0 2%;
+            color: #2e3e50;
+            background: url("/static/homepage_background.jpg");
+        }
 
-			h1,
-			h2,
-			h3 {
-				text-align: center;
-				font-family: "Baloo Tamma", cursive;
-			}
+        .X {
+            margin: auto;
+            padding: 1% 2%;
+            max-width: 1440px;
+            border: 5px inset rgb(237, 107, 64);
+            background: burlywood;
+            box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+        }
 
-			li {
-				color: #2c3e50;
-				font-size: 18px;
-				line-height: 30px;
-				text-align: justify;
-				letter-spacing: 1px;
-				font-family: "Raleway", serif;
-			}
+        h1,
+        h2,
+        h3 {
+            text-align: center;
+            font-family: "Baloo Tamma", cursive;
+        }
 
-			/*SG = style grid*/
-			.SG {
-				margin: 0;
-				padding: 0;
-				text-align: center;
-			}
+        li {
+            color: #2c3e50;
+            font-size: 18px;
+            line-height: 30px;
+            text-align: justify;
+            letter-spacing: 1px;
+            font-family: "Raleway", serif;
+        }
 
-			.SG .sgLi {
-				min-width: 24%;
-				margin: 2% 0.35%;
-				display: inline-flex;
-				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-			}
+        /*SG = style grid*/
+        .SG {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
 
-			.SG .sgLi:hover {
-				box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-			}
+        .SG .sgLi {
+            min-width: 24%;
+            margin: 2% 0.35%;
+            display: inline-flex;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
 
-			.SG .box {
-				width: 100%;
-				height: 100vh;
-				padding: 1% 2%;
-				background: #fff;
-				min-height: 200px;
-				max-height: 220px;
-				box-sizing: border-box;
-			}
+        .SG .sgLi:hover {
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+        }
 
-			/*Styles */
-			.df {
-				list-style-type: disc;
-			}
+        .SG .box {
+            width: 100%;
+            height: 100vh;
+            padding: 1% 2%;
+            background: #fff;
+            min-height: 200px;
+            max-height: 220px;
+            box-sizing: border-box;
+        }
 
-			.s1 {
-				list-style-type: square;
-			}
+        /*Styles */
+        .df {
+            list-style-type: disc;
+        }
 
-			.s2 {
-				list-style-type: circle;
-			}
+        .s1 {
+            list-style-type: square;
+        }
 
-			.s3 {
-				list-style-type: decimal;
-			}
+        .s2 {
+            list-style-type: circle;
+        }
 
-			.s4 {
-				list-style-type: decimal-leading-zero;
-			}
+        .s3 {
+            list-style-type: decimal;
+        }
 
-			.s5 {
-				list-style-type: lower-alpha;
-			}
+        .s4 {
+            list-style-type: decimal-leading-zero;
+        }
 
-			.s6 {
-				list-style-type: upper-alpha;
-			}
+        .s5 {
+            list-style-type: lower-alpha;
+        }
 
-			.s7 {
-				list-style-type: lower-roman;
-			}
+        .s6 {
+            list-style-type: upper-alpha;
+        }
 
-			.s8 {
-				list-style-type: upper-roman;
-			}
+        .s7 {
+            list-style-type: lower-roman;
+        }
 
-			.s9 {
-				list-style-type: lower-greek;
-			}
+        .s8 {
+            list-style-type: upper-roman;
+        }
 
-			.s10 {
-				list-style-type: georgian;
-			}
+        .s9 {
+            list-style-type: lower-greek;
+        }
 
-			.s11 {
-				list-style-type: hebrew;
-			}
+        .s10 {
+            list-style-type: georgian;
+        }
 
-			.s12 {
-				list-style-type: hiragana;
-			}
+        .s11 {
+            list-style-type: hebrew;
+        }
 
-			.s13 {
-				list-style-type: hiragana-iroha;
-			}
+        .s12 {
+            list-style-type: hiragana;
+        }
 
-			.s14 {
-				list-style-type: katakana;
-			}
+        .s13 {
+            list-style-type: hiragana-iroha;
+        }
 
-			.s15 {
-				list-style-type: katakana-iroha;
-			}
+        .s14 {
+            list-style-type: katakana;
+        }
 
-			.s16 {
-				list-style-type: cjk-ideographic;
-			}
+        .s15 {
+            list-style-type: katakana-iroha;
+        }
 
-			.s17 {
-				list-style-image: url(//goo.gl/L3tqpe);
-			}
+        .s16 {
+            list-style-type: cjk-ideographic;
+        }
 
-			.s18 {
-				list-style: none;
-			}
+        .s17 {
+            list-style-image: url(//goo.gl/L3tqpe);
+        }
 
-			.s18 li:before {
-				content: "";
-				width: 20px;
-				height: 20px;
-				margin-right: 15px;
-				display: inline-block;
-				background: url(//goo.gl/lcPSVD);
-				background-position: 50%;
-			}
+        .s18 {
+            list-style: none;
+        }
 
-			.s19 {
-				list-style: none;
-			}
+        .s18 li:before {
+            content: "";
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            display: inline-block;
+            background: url(//goo.gl/lcPSVD);
+            background-position: 50%;
+        }
 
-			.s19 li:before {
-				content: "\f0a9";
-				margin-right: 15px;
-				font-family: FontAwesome;
-			}
+        .s19 {
+            list-style: none;
+        }
 
-			.Homebutton {
-				width: 50px;
-				height: 40px;
-				border: 5px outset rgb(237, 107, 64);
-				background: rgb(237, 107, 64);
-				text-align: center;
-				color: #fff;
-				border-radius: 5px 5px 5px 5px;
-				cursor: pointer;
-				font-size: 20px;
-			}
+        .s19 li:before {
+            content: "\f0a9";
+            margin-right: 15px;
+            font-family: FontAwesome;
+        }
 
-			/* responsive grid*/
-			@media (max-width: 970px) {
-				.SG .sgLi {
-					width: 180px;
-				}
-			}
+        .Homebutton {
+            width: 50px;
+            height: 40px;
+            border: 5px outset rgb(237, 107, 64);
+            background: rgb(237, 107, 64);
+            text-align: center;
+            color: #fff;
+            border-radius: 5px 5px 5px 5px;
+            cursor: pointer;
+            font-size: 20px;
+        }
 
-			@media (max-width: 425px) {
-				.SG .sgLi {
-					width: 100%;
-				}
-			}
-		</style>
-	</head>
+        /* responsive grid*/
+        @media (max-width: 970px) {
+            .SG .sgLi {
+                width: 180px;
+            }
+        }
 
-	<body>
-		<div class="about-section">
-			<a href="/" class="Homebutton">Home</a>
-		</div>
-		<div class="X">
-			<h1>My Saved Recipes</h1>
+        @media (max-width: 425px) {
+            .SG .sgLi {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
 
-			<ul class="SG">
-				<li class="sgLi">
-					<div class="box">
-						<h3>Style disc</h3>
-						<ul class="df">
-							<li>Friday</li>
-							<li>Monday</li>
-							<li>Saturday</li>
-							<li>Wednesday</li>
-						</ul>
-					</div>
-				</li>
-				<!-- <li class="sgLi">
+<body>
+    <div class="about-section">
+        <a href="/" class="Homebutton">Home</a>
+    </div>
+    <div class="X">
+        <h1>My Saved Recipes</h1>
+
+        <ul class="SG">
+            <li class="sgLi">
+                {% for aRecipe in userRecipe %}
+                <div class="box">
+                    <h3>Title: {{aRecipe.recipeTitle}}</h3>
+                    <ul class="df">
+                        <li>Title: {{aRecipe.recipeTitle}}</li>
+                        <li>{{aRecipe.imageTitle}}</li>
+                        <li>Link: {{aRecipe.recipeLink}}</li>
+                    </ul>
+                </div>
+                {% endfor %}
+            </li>
+            <!-- <li class="sgLi">
 					<div class="box">
 						<h3>Style square</h3>
 						<ul class="s1">
@@ -413,7 +415,8 @@
 						</ol>
 					</div>
 				</li> -->
-			</ul>
-		</div>
-	</body>
+        </ul>
+    </div>
+</body>
+
 </html>
