@@ -7,7 +7,8 @@
 .inputIngredient {
 	text-align: center;
 	width: 400px;
-	margin: 0, auto;
+	margin: 0 auto;
+	margin-top: 7%;
 	border: 5px inset rgb(237, 107, 64);
 	background: burlywood;
 }
@@ -32,6 +33,7 @@
 
 form {
 	align-content: center;
+	display: inline-block;
 }
 
 .title-word {
