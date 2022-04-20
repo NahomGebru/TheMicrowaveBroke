@@ -35,9 +35,5 @@ class Recipes(db.Model):
     imageTitle = db.Column(db.String(300))
     recipeLink = db.Column(db.String(300))
 
-<<<<<<< HEAD
-db.create_all()
-=======
 
 db.create_all()
->>>>>>> e7c2ccdd730ff2f233dcfa356f88297e39590a66
