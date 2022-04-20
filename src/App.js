@@ -71,6 +71,7 @@ function App() {
 
 	let handleSave = (recipe) => {
 		let sendJson = {
+			recipeTitle: recipe.recipe_title,
 			imageTitle: recipe.recipe_picture,
 			recipeLink: recipe.recipe_link,
 		};

@@ -145,6 +145,7 @@ def save_recipes():
     new_recipes = [
         Recipes(
             googleId=session["user_id"],
+            recipeTitle=data.get("recipeTitle"),
             imageTitle=data.get("imageTitle"),
             recipeLink=data.get("recipeLink"),
         )
