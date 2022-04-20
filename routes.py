@@ -93,7 +93,9 @@ def AboutUs():
 
 @app.route("/user_recipes")
 def userRecipe():
-    return render_template("myrecipes.html")
+    userRecipe = Recipes.query.filter_by(googleId=session["user_id"]).all()
+    print(userRecipe)
+    return render_template("myrecipes.html", userRecipe=userRecipe)
 
 
 @app.route("/get_userinfo")

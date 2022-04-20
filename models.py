@@ -31,9 +31,9 @@ class Filters(db.Model):
 class Recipes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     googleId = db.Column(db.String(200))
+    recipeTitle = db.Column(db.String(200))
     imageTitle = db.Column(db.String(300))
     recipeLink = db.Column(db.String(300))
-
 
 
 db.create_all()
