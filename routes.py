@@ -152,8 +152,6 @@ def save_recipes():
             recipeLink=data.get("recipeLink"),
         )
     ]
-    for recipes in user_recipes:
-        db.session.delete(recipes)
     for recipes in new_recipes:
         db.session.add(recipes)
     db.session.commit()
