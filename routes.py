@@ -148,7 +148,6 @@ def save_recipes():
             imageTitle=data.get("imageTitle"),
             recipeLink=data.get("recipeLink"),
         )
-        for s in data
     ]
     for recipes in user_recipes:
         db.session.delete(recipes)

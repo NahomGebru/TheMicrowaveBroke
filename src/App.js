@@ -99,6 +99,10 @@ function App() {
 		console.log("newFormValues for ingredientList:");
 		console.log(newFormValues);
 		for (var i = 0; i < newFormValues.length; i++) {
+			if (newFormValues[i].ingredient === "") {
+				alert("Please enter a ingredient in the empty blanks!");
+				return;
+			}
 			if (newFormValues[i].ingredient) {
 				ingredientArray.push(newFormValues[i].ingredient);
 			}
