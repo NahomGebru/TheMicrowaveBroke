@@ -141,7 +141,6 @@ def getFilter():
 def save_recipes():
     data = flask.request.json
     print(data)
-    user_recipes = Recipes.query.filter_by(googleId=session["user_id"]).all()
     new_recipes = [
         Recipes(
             googleId=session["user_id"],
@@ -150,10 +149,7 @@ def save_recipes():
             recipeLink=data.get("recipeLink"),
         )
     ]
-    for recipes in user_recipes:
-        db.session.delete(recipes)
-    for recipes in new_recipes:
-        db.session.add(recipes)
+    db.session.add(new_recipes)
     db.session.commit()
     return flask.jsonify("Recipes successfully saved")
 
