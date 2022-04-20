@@ -38,12 +38,13 @@
 				margin: 0;
 				padding: 0;
 				text-align: center;
+				overflow: auto;
 			}
 
 			.SG .sgLi {
 				min-width: 24%;
 				margin: 2% 0.35%;
-				display: inline-flex;
+				display: inline-block;
 				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 			}
 
@@ -59,6 +60,11 @@
 				min-height: 200px;
 				max-height: 220px;
 				box-sizing: border-box;
+			}
+
+			.SG .img {
+				overflow: auto;
+				display: inline-block;
 			}
 
 			/*Styles */
@@ -196,11 +202,10 @@
 				{% for aRecipe in userRecipe %}
 				<li class="sgLi">
 					<div class="box">
-						<h3>Title: {{aRecipe.recipeTitle}}</h3>
+						<h3>{{aRecipe.recipeTitle}}</h3>
 						<ul class="df">
-							<li>Title: {{aRecipe.recipeTitle}}</li>
-							<li>{{aRecipe.imageTitle}}</li>
-							<li>Link: {{aRecipe.recipeLink}}</li>
+							<img src="{{aRecipe.imageTitle}}" />
+							<a href="{aRecipe.recipeLink}">See Recipe</a>
 						</ul>
 					</div>
 				</li>

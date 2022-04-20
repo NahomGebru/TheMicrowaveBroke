@@ -151,8 +151,9 @@ def save_recipes():
             recipeLink=data.get("recipeLink"),
         )
     ]
-    for recipe in new_recipes:
-        db.session.add(recipe)
+    for recipes in new_recipes:
+        db.session.add(recipes)
+    db.session.commit()
     return flask.jsonify("Recipes successfully saved")
 
 
