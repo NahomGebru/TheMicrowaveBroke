@@ -94,7 +94,6 @@ def AboutUs():
 @app.route("/user_recipes")
 def userRecipe():
     userRecipe = Recipes.query.filter_by(googleId=session["user_id"]).all()
-    print(userRecipe)
     return render_template("myrecipes.html", userRecipe=userRecipe)
 
 
@@ -156,6 +155,18 @@ def save_recipes():
     db.session.commit()
     return flask.jsonify("Recipes successfully saved")
 
+@app.route("/delete_recipes", methods=["POST"])
+def delete_recipes():
+    data = flask.request.form
+    print(data)
+    delete_recipe = Recipes.query.filter_by(recipeLink=data["recipeLink"]).all()
+    print("deleteRecipe: ")
+    print(delete_recipe)
+    for recipes in delete_recipe:
+        db.session.delete(recipes)
+    db.session.commit()
+    print("Recipe successfully deleted")
+    return flask.redirect("/user_recipes")
 
 @app.route("/save_ingredients", methods=["POST"])
 def save_ingredients():

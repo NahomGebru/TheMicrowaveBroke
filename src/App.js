@@ -197,7 +197,7 @@ function App() {
 							name="asian"
 							value="asian"
 						/>
-						<label>Asian |</label>
+						<label>Asian | </label>
 						<input
 							type="checkbox"
 							checked={cuisineList[1]}
@@ -215,7 +215,7 @@ function App() {
 							name="vegetarian"
 							value="vegetarian"
 						/>
-						<label>Vegetarian |</label>
+						<label>Vegetarian | </label>
 						<input
 							type="checkbox"
 							checked={dietList[1]}
@@ -233,7 +233,7 @@ function App() {
 							name="peanut"
 							value="peanut"
 						/>
-						<label>Peanuts |</label>
+						<label>Peanuts | </label>
 						<input
 							type="checkbox"
 							checked={allergyList[1]}
