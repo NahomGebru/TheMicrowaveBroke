@@ -42,7 +42,7 @@ def login():
     if request.args.get("next"):
         session["next"] = request.args.get("next")
         return redirect(
-            f"https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=http://127.0.0.1:5000/authorized&client_id={GOOGLE_CLIENT_ID}"
+            f"https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/userinfo.profile&access_type=offline&include_granted_scopes=true&response_type=code&redirect_uri=https://vast-peak-91474.herokuapp.com/authorized&client_id={GOOGLE_CLIENT_ID}"
         )
     return render_template("login.html")
 
@@ -56,7 +56,7 @@ def google_authorized():
             "client_secret": GOOGLE_CLIENT_SECRET,
             "code": request.args.get("code"),
             "grant_type": "authorization_code",
-            "redirect_uri": "http://127.0.0.1:5000/authorized",
+            "redirect_uri": "https://vast-peak-91474.herokuapp.com/authorized",
         },
     )
     print(colored(r.json(), "red"))
@@ -155,6 +155,7 @@ def save_recipes():
     db.session.commit()
     return flask.jsonify("Recipes successfully saved")
 
+
 @app.route("/delete_recipes", methods=["POST"])
 def delete_recipes():
     data = flask.request.form
@@ -167,6 +168,7 @@ def delete_recipes():
     db.session.commit()
     print("Recipe successfully deleted")
     return flask.redirect("/user_recipes")
+
 
 @app.route("/save_ingredients", methods=["POST"])
 def save_ingredients():
