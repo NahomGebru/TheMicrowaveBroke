@@ -57,9 +57,13 @@ This is all of the requirements needed to have this web application running loca
 
 ## Linting:
 pylint: disable=import-error: This error was disabled because it comes from an import statement having trouble successfully importing the specified module. 
+  
 pylint: disable=broad-except: Used when an except catches a too general exception, possibly burying unrelated errors. This error was present in our flask_test.py file as the exception was “as e”. Trying to catch the exception of “some modules are missing” error. 
+  
 pylint: disable=consider-using-f-string: Used when a string that is being formatted with format() or % which could potentially be a f-string. This is present in the flask_test.py as format(e).
-pylint: disable=redefined-outer-name:  Used when a variable's name hides a name defined in the outer scope. . This is present in the flask_test.py file.
+  
+pylint: disable=redefined-outer-name:  Used when a variable's name hides a name defined in the outer scope.This is present in the flask_test.py file.
+  
 /* eslint-disable react/prop-types */: Disabling because of use of a plugin used that is not recognized. 
   
   
