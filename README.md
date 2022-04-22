@@ -36,19 +36,19 @@ Once signed in you will need to create a new project. Once you create a project 
 
 
 To create a Heroku Database please create an account with Heroku and begin these steps in your terminal:
-`heroku login -I ` This logs you into your heroku account
-`heroku create` Create a new Heroku app
-`heroku addons:create heroku-postgresql:hobby-dev` Create a new remote DB on your Heroku app
-`heroku config` This gives you the database url. Export this into the .env file.
-IF THE URL STARTS WITH postgres:, replace that with postgresql:
+* `heroku login -I ` This logs you into your heroku account
+* `heroku create` Create a new Heroku app
+* `heroku addons:create heroku-postgresql:hobby-dev` Create a new remote DB on your Heroku app
+* `heroku config` This gives you the database url. Export this into the .env file.
+* IF THE URL STARTS WITH postgres:, replace that with postgresql:
 
   
 You will need to create a `.env` file in the same folder where the project is being held. In that .env file you need to export a few things listed below:
-* `export DATABASE_URL` = ‘<Heroku Database URL goes here>’
-* `export SECRET_KEY` = ‘<Any key you want goes here>’
-* `export GOOGLE_CLIENT_ID` = ‘<Google Client ID goes here>’
-* `export GOOGLE_CLIENT_SECRET` = ‘Google Client Secret goes here>’
-* `export SPOON_API_KEY` = '<Spoonacular API Key goes here>'
+* `export DATABASE_URL` = ‘Heroku Database URL goes here’
+* `export SECRET_KEY` = ‘Any key you want goes here’
+* `export GOOGLE_CLIENT_ID` = ‘Google Client ID goes here’
+* `export GOOGLE_CLIENT_SECRET` = ‘Google Client Secret goes here’
+* `export SPOON_API_KEY` = 'Spoonacular API Key goes here'
 
 Now you must change 2 specific lines in the routes.py file in order to get the code up and running. Line 45 and 59 contains a Heroku link that must be changed to your localhost URL. Change the part of the line containing “https://vast-peak-91474.herokuapp.com” to your local host. DO NOT CHANGE “/authorized” on the line of code. 
 
