@@ -44,11 +44,11 @@ IF THE URL STARTS WITH postgres:, replace that with postgresql:
 
   
 You will need to create a `.env` file in the same folder where the project is being held. In that .env file you need to export a few things listed below:
-*`export DATABASE_URL` = ‘<Heroku Database URL goes here>’
-*`export SECRET_KEY` = ‘<Any key you want goes here>’
-*`export GOOGLE_CLIENT_ID` = ‘<Google Client ID goes here>’
-*`export GOOGLE_CLIENT_SECRET` = ‘Google Client Secret goes here>’
-*`export SPOON_API_KEY` = '<Spoonacular API Key goes here>'
+* `export DATABASE_URL` = ‘<Heroku Database URL goes here>’
+* `export SECRET_KEY` = ‘<Any key you want goes here>’
+* `export GOOGLE_CLIENT_ID` = ‘<Google Client ID goes here>’
+* `export GOOGLE_CLIENT_SECRET` = ‘Google Client Secret goes here>’
+* `export SPOON_API_KEY` = '<Spoonacular API Key goes here>'
 
 Now you must change 2 specific lines in the routes.py file in order to get the code up and running. Line 45 and 59 contains a Heroku link that must be changed to your localhost URL. Change the part of the line containing “https://vast-peak-91474.herokuapp.com” to your local host. DO NOT CHANGE “/authorized” on the line of code. 
 
