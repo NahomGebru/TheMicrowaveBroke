@@ -36,10 +36,10 @@ Once signed in you will need to create a new project. Once you create a project 
 
 
 To create a Heroku Database please create an account with Heroku and begin these steps in your terminal:
-`heroku login -I ` <This logs you into your heroku account>
-`heroku create` < Create a new Heroku app>
-`heroku addons:create heroku-postgresql:hobby-dev` < Create a new remote DB on your Heroku app>
-`heroku config` <This gives you the database url. Export this into the .env file.>
+`heroku login -I ` This logs you into your heroku account
+`heroku create` Create a new Heroku app
+`heroku addons:create heroku-postgresql:hobby-dev` Create a new remote DB on your Heroku app
+`heroku config` This gives you the database url. Export this into the .env file.
 IF THE URL STARTS WITH postgres:, replace that with postgresql:
 
   
