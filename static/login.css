@@ -32,10 +32,12 @@
 
 @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
 
+
 h2 {
   font-family: "Montserrat Medium";
   font: weight 900px;
   max-width: 40ch;
+  margin-left: 10%;
   text-align: center;
   transform: scale(0.94);
   animation: scale 3s forwards cubic-bezier(0.5, 1, 0.89, 1);
