@@ -3,7 +3,7 @@
 ## Overview:
 Heroku URL: https://vast-peak-91474.herokuapp.com
 
-The main-Objective of this web-app is to generate a repose based off of the ingredients present in the kitchen having salt, pepper, sugar, and the likes as default ingredients. 
+The main-Objective of this web-app is to generate a reponse based off of the ingredients present in the kitchen having salt, pepper, sugar, and the likes as default ingredients. 
 
 ## Installation Requirements:
 Before running this app locally, you must pip or pip3 install the following dependencies:
